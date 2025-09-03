@@ -1,14 +1,14 @@
 -- Auto Ghost Burger Script for Forsaken (Roblox)
--- Requires Rayfield UI Library (latest: SiriusMenu/Rayfield)
+-- Uses the latest Rayfield UI Library
 
 local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/SiriusMenu/Rayfield/main/source.lua"))()
 
 local Window = Rayfield:CreateWindow({
    Name = "Forsaken Cheats",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   Icon = 0,
    LoadingTitle = "Forsaken Hack",
    LoadingSubtitle = "by jakcjava-lab",
-   ShowText = "Rayfield", -- for mobile users to unhide rayfield, change if you'd like
+   ShowText = "Rayfield",
    Theme = "Default",
    ToggleUIKeybind = "K",
    DisableRayfieldPrompts = false,
@@ -49,7 +49,6 @@ Tab:CreateToggle({
 })
 
 function IsLMS()
-    -- Replace with actual Forsaken LMS detection logic
     local players = game.Players:GetPlayers()
     if #players == 2 then
         for _, player in ipairs(players) do
@@ -74,7 +73,6 @@ spawn(function()
     while true do
         wait(1)
         if Enabled then
-            -- Replace with actual timer UI path!
             local timerText = (game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TimerLabel") or {}).Text
             if timerText == "1:13" and IsLMS() then
                 UseGhostBurger()
