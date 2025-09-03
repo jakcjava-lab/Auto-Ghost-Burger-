@@ -1,51 +1,28 @@
 -- Auto Ghost Burger Script for Forsaken (Roblox)
--- Uses a working Rayfield UI Library fork
+-- Uses Orion UI Library
 
-local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/JUSTANAX/ui-library/main/RayField.lua"))()
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/p3arl/Orion/main/Orion.lua"))()
 
-local Window = Rayfield:CreateWindow({
-   Name = "Forsaken Cheats",
-   Icon = 0,
-   LoadingTitle = "Forsaken Hack",
-   LoadingSubtitle = "by jakcjava-lab",
-   ShowText = "Rayfield",
-   Theme = "Default",
-   ToggleUIKeybind = "K",
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false,
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "ForsakenAutoBurger",
-      FileName = "ForsakenAutoBurgerSettings"
-   },
-   Discord = {
-      Enabled = false,
-      Invite = "noinvitelink",
-      RememberJoins = true
-   },
-   KeySystem = false,
-   KeySettings = {
-      Title = "Untitled",
-      Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided",
-      FileName = "Key",
-      SaveKey = true,
-      GrabKeyFromSite = false,
-      Key = {"Hello"}
-   }
+local Window = OrionLib:MakeWindow({
+    Name = "Forsaken Cheats",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "ForsakenAutoBurger"
 })
-
-local Tab = Window:CreateTab("Auto Ghost Burger", 4483362458)
 
 local Enabled = false
 
-Tab:CreateToggle({
-   Name = "Enable Auto Ghost Burger",
-   CurrentValue = false,
-   Flag = "AutoGhostBurger",
-   Callback = function(Value)
-      Enabled = Value
-   end,
+local Tab = Window:MakeTab({
+    Name = "Auto Ghost Burger",
+    Icon = "rbxassetid://4483362458"
+})
+
+Tab:AddToggle({
+    Name = "Enable Auto Ghost Burger",
+    Default = false,
+    Callback = function(Value)
+        Enabled = Value
+    end
 })
 
 function IsLMS()
@@ -73,15 +50,19 @@ spawn(function()
     while true do
         wait(1)
         if Enabled then
-            local timerText = (game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TimerLabel") or {}).Text
+            local timerLabel = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TimerLabel")
+            local timerText = timerLabel and timerLabel.Text or nil
             if timerText == "1:13" and IsLMS() then
                 UseGhostBurger()
-                Rayfield:Notify({
-                    Title = "Ghost Burger Used!",
+                OrionLib:MakeNotification({
+                    Name = "Ghost Burger Used!",
                     Content = "Auto Ghost Burger activated at 1:13 in LMS.",
-                    Duration = 5,
+                    Image = "rbxassetid://4483362458",
+                    Time = 5
                 })
             end
         end
     end
 end)
+
+OrionLib:Init()
