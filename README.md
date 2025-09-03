@@ -1,1 +1,1 @@
-# Auto-Ghost-Burger-
+# Auto-Ghost-Burger-.lua
