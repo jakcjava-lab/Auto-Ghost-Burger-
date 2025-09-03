@@ -1,7 +1,7 @@
 -- Auto Ghost Burger Script for Forsaken (Roblox)
--- Uses the latest Rayfield UI Library
+-- Uses a working Rayfield UI Library fork
 
-local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/SiriusMenu/Rayfield/main/source.lua"))()
+local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/JUSTANAX/ui-library/main/RayField.lua"))()
 
 local Window = Rayfield:CreateWindow({
    Name = "Forsaken Cheats",
