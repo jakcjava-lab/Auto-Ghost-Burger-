@@ -11,7 +11,6 @@ local Window = OrionLib:MakeWindow({
 })
 
 local Enabled = false
-
 local Tab = Window:MakeTab({
     Name = "Auto Ghost Burger",
     Icon = "rbxassetid://4483362458"
@@ -25,11 +24,12 @@ Tab:AddToggle({
     end
 })
 
-function IsLMS()
+-- safer check for killer (adjust if Forsaken uses attributes/teams differently)
+local function IsLMS()
     local players = game.Players:GetPlayers()
     if #players == 2 then
-        for _, player in ipairs(players) do
-            if player.Name == "Killer" or (player.Team and player.Team.Name == "Killer") then
+        for _, plr in ipairs(players) do
+            if plr.Team and string.lower(plr.Team.Name) == "killer" then
                 return true
             end
         end
@@ -37,23 +37,27 @@ function IsLMS()
     return false
 end
 
-function UseGhostBurger()
+local function UseGhostBurger()
     local remote = game.ReplicatedStorage:FindFirstChild("ActivateGhostBurger")
     if remote then
         remote:FireServer()
     else
-        print("Ghost Burger used!")
+        warn("[AutoBurger] Ghost Burger Remote not found!")
     end
 end
 
 spawn(function()
-    while true do
-        wait(1)
-        if Enabled then
-            local timerLabel = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TimerLabel")
+    local used = false
+    while task.wait(1) do
+        if Enabled and not used then
+            local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+            local timerGui = gui:FindFirstChildWhichIsA("ScreenGui")
+            local timerLabel = timerGui and timerGui:FindFirstChild("TimerLabel", true)
+
             local timerText = timerLabel and timerLabel.Text or nil
             if timerText == "1:13" and IsLMS() then
                 UseGhostBurger()
+                used = true -- stop spamming
                 OrionLib:MakeNotification({
                     Name = "Ghost Burger Used!",
                     Content = "Auto Ghost Burger activated at 1:13 in LMS.",
